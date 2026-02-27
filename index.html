@@ -1,250 +1,204 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Smart Computer Spec</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg-color: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  --card-bg: #1e1e1e;
-  --text-color: #ffffff;
-  --accent: #00ffcc;
+  --bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --card: #1c1c1c;
+  --text: #fff;
+  --accent: #00ffc3;
 }
 
-body.light {
-  --bg-color: linear-gradient(135deg,#e3f2fd,#ffffff);
-  --card-bg: #ffffff;
-  --text-color: #222;
+.light {
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --text: #111;
   --accent: #0077ff;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.4s ease;
 }
 
-body{
-  background:var(--bg-color);
-  color:var(--text-color);
-  transition:0.4s ease;
-  min-height:100vh;
+header {
+  text-align: center;
+  padding: 40px 20px 20px;
 }
 
-header{
-  text-align:center;
-  padding:40px 20px;
+h1 {
+  margin-bottom: 10px;
 }
 
-h1{
-  font-size:36px;
-  margin-bottom:10px;
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
 }
 
-.toggle-btn{
-  position:absolute;
-  top:20px;
-  right:20px;
-  padding:8px 15px;
-  border:none;
-  border-radius:20px;
-  background:var(--accent);
-  cursor:pointer;
+input, select, button {
+  padding: 10px 15px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
 }
 
-.search-box{
-  text-align:center;
-  margin:20px 0 40px;
+button {
+  background: var(--accent);
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.search-box input, .search-box select{
-  padding:10px 15px;
-  margin:5px;
-  border:none;
-  border-radius:20px;
-  width:200px;
-  outline:none;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.search-box button{
-  padding:10px 15px;
-  border:none;
-  border-radius:20px;
-  background:var(--accent);
-  cursor:pointer;
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0;
 }
 
-.container{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:25px;
-  padding:20px;
+.card.show {
+  transform: translateY(0);
+  opacity: 1;
 }
 
-.card{
-  background:var(--card-bg);
-  width:260px;
-  padding:25px;
-  border-radius:15px;
-  text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,0.3);
-  transition:0.3s ease;
-  opacity:1;
+.card:hover {
+  transform: translateY(-5px);
 }
 
-.card.hide{
-  display:none;
+.badge {
+  font-size: 12px;
+  margin-bottom: 5px;
 }
 
-.card:hover{
-  transform:translateY(-10px) scale(1.05);
+.price {
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: bold;
 }
 
-.price{
-  margin-top:10px;
-  font-weight:600;
-  color:var(--accent);
-}
-
-footer{
-  text-align:center;
-  padding:30px;
-  opacity:0.6;
+.toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<button class="toggle-btn" onclick="toggleTheme()">🌙 / ☀️</button>
+<button class="toggle" onclick="toggleMode()">🌙 / ☀️</button>
 
 <header>
   <h1>🤖 Smart Computer Spec System</h1>
   <p>ระบบค้นหาและแนะนำสเปคคอมพิวเตอร์</p>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="ค้นหา CPU / GPU / ชื่อ..." />
+    <input type="number" id="budget" placeholder="ใส่งบประมาณ (บาท)" />
+    <select id="sort">
+      <option value="">เรียงราคา</option>
+      <option value="low">ราคาต่ำ → สูง</option>
+      <option value="high">ราคาสูง → ต่ำ</option>
+    </select>
+    <button onclick="applyFilter()">ค้นหา</button>
+  </div>
 </header>
 
-<div class="search-box">
-  <input type="text" id="searchName" placeholder="🔎 ค้นหาชื่อ / CPU / GPU">
-  <input type="number" id="searchPrice" placeholder="💰 งบสูงสุด">
-  <select id="sortPrice">
-    <option value="">เรียงราคา</option>
-    <option value="low">ต่ำ → สูง</option>
-    <option value="high">สูง → ต่ำ</option>
-  </select>
-  <button onclick="clearFilter()">ล้าง</button>
-</div>
-
-<div class="container" id="cardContainer">
-
-  <!-- เพิ่มสเปคเยอะๆ -->
-  <div class="card" data-name="Gaming Starter Ryzen 5 RTX 3060" data-price="25900">
-    <h3>Gaming Starter</h3>
-    <p>Ryzen 5 5600 | RTX 3060 | 16GB</p>
-    <p class="price">25,900 บาท</p>
-  </div>
-
-  <div class="card" data-name="Gaming Plus Ryzen 5 RTX 4060" data-price="32900">
-    <h3>Gaming Plus</h3>
-    <p>Ryzen 5 7600 | RTX 4060 | 16GB</p>
-    <p class="price">32,900 บาท</p>
-  </div>
-
-  <div class="card" data-name="Gaming Pro i7 RTX 4080" data-price="42900">
-    <h3>Gaming Pro</h3>
-    <p>i7-13700K | RTX 4080 | 32GB</p>
-    <p class="price">42,900 บาท</p>
-  </div>
-
-  <div class="card" data-name="Office Basic i3" data-price="18500">
-    <h3>Office Basic</h3>
-    <p>i3-12100 | 8GB | SSD</p>
-    <p class="price">18,500 บาท</p>
-  </div>
-
-  <div class="card" data-name="Office Pro i5" data-price="22900">
-    <h3>Office Pro</h3>
-    <p>i5-13400 | 16GB</p>
-    <p class="price">22,900 บาท</p>
-  </div>
-
-  <div class="card" data-name="Programmer Set Ryzen 7" data-price="36900">
-    <h3>Programmer Set</h3>
-    <p>Ryzen 7 7700X | 32GB</p>
-    <p class="price">36,900 บาท</p>
-  </div>
-
-  <div class="card" data-name="Graphic Design i9 RTX 4090" data-price="55900">
-    <h3>Graphic Design</h3>
-    <p>i9-13900K | RTX 4090 | 64GB</p>
-    <p class="price">55,900 บาท</p>
-  </div>
-
-</div>
-
-<footer>
-  © 2026 Smart Computer Spec API Project
-</footer>
+<div class="grid" id="computerList"></div>
 
 <script>
-const nameInput = document.getElementById("searchName");
-const priceInput = document.getElementById("searchPrice");
-const sortSelect = document.getElementById("sortPrice");
-const container = document.getElementById("cardContainer");
+let computers = [];
 
-function filterCards(){
-  const nameValue = nameInput.value.toLowerCase();
-  const priceValue = priceInput.value ? parseInt(priceInput.value) : null;
+async function fetchData() {
+  const res = await fetch("/api/computers");
+  computers = await res.json();
+  render(computers);
+}
 
-  const cards = document.querySelectorAll(".card");
+function render(data) {
+  const container = document.getElementById("computerList");
+  container.innerHTML = "";
 
-  cards.forEach(card=>{
-    const cardName = card.dataset.name.toLowerCase();
-    const cardPrice = parseInt(card.dataset.price);
+  data.forEach((pc, index) => {
+    const card = document.createElement("div");
+    card.className = "card";
 
-    const matchName = cardName.includes(nameValue);
-    const matchPrice = !priceValue || cardPrice <= priceValue;
+    card.innerHTML = `
+      <div class="badge">${pc.badge || ""}</div>
+      <h3>${pc.name}</h3>
+      <p>${pc.cpu}</p>
+      <p>${pc.gpu}</p>
+      <p>${pc.ram} | ${pc.storage}</p>
+      <p>${pc.os}</p>
+      <div class="price">${pc.price.toLocaleString()} บาท</div>
+    `;
 
-    card.style.display = (matchName && matchPrice) ? "block" : "none";
+    container.appendChild(card);
+
+    setTimeout(() => {
+      card.classList.add("show");
+    }, index * 80);
   });
-
-  sortCards();
 }
 
-function sortCards(){
-  const cards = Array.from(document.querySelectorAll(".card"));
-  const value = sortSelect.value;
+function applyFilter() {
+  let filtered = [...computers];
 
-  if(!value) return;
+  const keyword = document.getElementById("search").value.toLowerCase();
+  const budget = document.getElementById("budget").value;
+  const sort = document.getElementById("sort").value;
 
-  cards.sort((a,b)=>{
-    const priceA = parseInt(a.dataset.price);
-    const priceB = parseInt(b.dataset.price);
-    return value === "low" ? priceA - priceB : priceB - priceA;
-  });
+  if (keyword) {
+    filtered = filtered.filter(pc =>
+      pc.name.toLowerCase().includes(keyword) ||
+      pc.cpu.toLowerCase().includes(keyword) ||
+      pc.gpu.toLowerCase().includes(keyword)
+    );
+  }
 
-  cards.forEach(card=>container.appendChild(card));
+  if (budget) {
+    filtered = filtered
+      .filter(pc => pc.price <= budget)
+      .sort((a, b) => b.price - a.price)
+      .slice(0, 3);
+  }
+
+  if (sort === "low") {
+    filtered.sort((a, b) => a.price - b.price);
+  }
+  if (sort === "high") {
+    filtered.sort((a, b) => b.price - a.price);
+  }
+
+  render(filtered);
 }
 
-function clearFilter(){
-  nameInput.value = "";
-  priceInput.value = "";
-  sortSelect.value = "";
-  filterCards();
-}
-
-nameInput.addEventListener("input", filterCards);
-priceInput.addEventListener("input", filterCards);
-sortSelect.addEventListener("change", filterCards);
-
-function toggleTheme(){
+function toggleMode() {
   document.body.classList.toggle("light");
 }
+
+fetchData();
 </script>
 
 </body>
