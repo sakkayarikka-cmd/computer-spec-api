@@ -1,43 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Computer Spec API</title>
+  <title>Smart Computer Spec AI</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      font-family: Arial;
+      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      color: white;
+      text-align: center;
       margin: 0;
       padding: 40px;
-      text-align: center;
-      color: white;
-    }
-
-    h1 {
-      margin-bottom: 20px;
     }
 
     button {
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
+      padding: 10px 20px;
       border-radius: 8px;
+      border: none;
       cursor: pointer;
-      background: #00c6ff;
-      color: black;
+      background: #00e5ff;
       font-weight: bold;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #00e0ff;
-      transform: scale(1.05);
     }
 
     .container {
-      margin-top: 40px;
+      margin-top: 30px;
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
     }
 
@@ -45,60 +33,115 @@
       background: white;
       color: black;
       width: 250px;
-      padding: 20px;
+      padding: 15px;
       border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      cursor: pointer;
       transition: 0.3s;
     }
 
     .card:hover {
-      transform: translateY(-10px);
+      transform: scale(1.05);
     }
 
-    .card h3 {
-      margin-top: 0;
-      color: #2a5298;
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
     }
 
-    .spec {
-      text-align: left;
-      margin-top: 10px;
+    #modalContent {
+      background: white;
+      color: black;
+      width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    input {
+      padding: 8px;
+      width: 200px;
     }
   </style>
 </head>
 <body>
 
-  <h1>💻 Computer Spec API</h1>
-  <p>เลือกดูสเปคคอมพิวเตอร์</p>
+<h1>🤖 Smart Computer Spec AI</h1>
 
-  <button onclick="loadSpecs()">Load Computers</button>
+<button onclick="loadComputers()">Load Computers</button>
 
-  <div class="container" id="result"></div>
+<h2>AI Recommend</h2>
+<input id="useInput" placeholder="เช่น gaming, office, coding">
+<button onclick="recommend()">แนะนำสเปค</button>
 
-  <script>
-    async function loadSpecs() {
-      const res = await fetch('/api/spec');
-      const data = await res.json();
+<div class="container" id="result"></div>
 
-      const container = document.getElementById('result');
-      container.innerHTML = '';
+<div id="modal">
+  <div id="modalContent">
+    <div id="detail"></div>
+    <button onclick="closeModal()">Close</button>
+  </div>
+</div>
 
-      data.forEach(pc => {
-        container.innerHTML += `
-          <div class="card">
-            <h3>${pc.name}</h3>
-            <div class="spec">
-              <p><b>CPU:</b> ${pc.cpu}</p>
-              <p><b>RAM:</b> ${pc.ram}</p>
-              <p><b>Storage:</b> ${pc.storage}</p>
-              <p><b>GPU:</b> ${pc.gpu}</p>
-              <p><b>OS:</b> ${pc.os}</p>
-            </div>
-          </div>
-        `;
-      });
-    }
-  </script>
+<script>
+
+async function loadComputers(){
+  const res = await fetch('/api/spec');
+  const data = await res.json();
+
+  const container = document.getElementById('result');
+  container.innerHTML = '';
+
+  data.forEach(pc => {
+    container.innerHTML += `
+      <div class="card" onclick="showDetail(${pc.id})">
+        <h3>${pc.name}</h3>
+        <p>${pc.cpu}</p>
+        <p>${pc.ram}</p>
+      </div>
+    `;
+  });
+
+  window.allComputers = data;
+}
+
+function showDetail(id){
+  const pc = window.allComputers.find(x => x.id === id);
+
+  document.getElementById('detail').innerHTML = `
+    <h2>${pc.name}</h2>
+    <p><b>CPU:</b> ${pc.cpu}</p>
+    <p><b>RAM:</b> ${pc.ram}</p>
+    <p><b>Storage:</b> ${pc.storage}</p>
+    <p><b>GPU:</b> ${pc.gpu}</p>
+    <p><b>OS:</b> ${pc.os}</p>
+  `;
+
+  document.getElementById('modal').style.display = 'block';
+}
+
+function closeModal(){
+  document.getElementById('modal').style.display = 'none';
+}
+
+async function recommend(){
+  const use = document.getElementById('useInput').value;
+
+  const res = await fetch('/api/spec?use=' + use);
+  const data = await res.json();
+
+  if(data.recommendation){
+    showDetail(data.recommendation.id);
+  }else{
+    alert("ไม่พบคำแนะนำ");
+  }
+}
+
+</script>
 
 </body>
 </html>
