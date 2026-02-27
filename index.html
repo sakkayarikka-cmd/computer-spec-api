@@ -1,42 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Computer Spec API</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            margin-top: 50px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 15px;
-            display: inline-block;
-            text-align: left;
-        }
-    </style>
+  <title>Computer Spec API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+      color: white;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #00c6ff;
+      color: black;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00e0ff;
+      transform: scale(1.05);
+    }
+
+    .container {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      width: 250px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #2a5298;
+    }
+
+    .spec {
+      text-align: left;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Computer Spec API</h1>
-    <p>กดปุ่มเพื่อดึงข้อมูลสเปคคอมพิวเตอร์</p>
+  <h1>💻 Computer Spec API</h1>
+  <p>เลือกดูสเปคคอมพิวเตอร์</p>
 
-    <button onclick="getSpec()">Load Spec</button>
+  <button onclick="loadSpecs()">Load Computers</button>
 
-    <pre id="result"></pre>
+  <div class="container" id="result"></div>
 
-    <script>
-        async function getSpec() {
-            const res = await fetch('/api/spec');
-            const data = await res.json();
-            document.getElementById('result').textContent =
-                JSON.stringify(data, null, 2);
-        }
-    </script>
+  <script>
+    async function loadSpecs() {
+      const res = await fetch('/api/spec');
+      const data = await res.json();
+
+      const container = document.getElementById('result');
+      container.innerHTML = '';
+
+      data.forEach(pc => {
+        container.innerHTML += `
+          <div class="card">
+            <h3>${pc.name}</h3>
+            <div class="spec">
+              <p><b>CPU:</b> ${pc.cpu}</p>
+              <p><b>RAM:</b> ${pc.ram}</p>
+              <p><b>Storage:</b> ${pc.storage}</p>
+              <p><b>GPU:</b> ${pc.gpu}</p>
+              <p><b>OS:</b> ${pc.os}</p>
+            </div>
+          </div>
+        `;
+      });
+    }
+  </script>
 
 </body>
 </html>
