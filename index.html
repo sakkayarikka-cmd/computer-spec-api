@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Computer Spec</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-color: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  --card-bg: #1e1e1e;
+  --text-color: #ffffff;
+  --accent: #00ffcc;
+}
+
+body.light {
+  --bg-color: linear-gradient(135deg,#e3f2fd,#ffffff);
+  --card-bg: #ffffff;
+  --text-color: #222;
+  --accent: #0077ff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:var(--bg-color);
+  color:var(--text-color);
+  transition:0.4s ease;
+  min-height:100vh;
+}
+
+header{
+  text-align:center;
+  padding:40px 20px;
+}
+
+h1{
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+.toggle-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+  padding:8px 15px;
+  border:none;
+  border-radius:20px;
+  background:var(--accent);
+  cursor:pointer;
+}
+
+.search-box{
+  text-align:center;
+  margin:20px 0 40px;
+}
+
+.search-box input{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:20px;
+  width:220px;
+  outline:none;
+}
+
+.container{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:25px;
+  padding:20px;
+}
+
+.card{
+  background:var(--card-bg);
+  width:260px;
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  transition:0.4s ease;
+  opacity:1;
+  transform:scale(1);
+}
+
+.card.hide{
+  opacity:0;
+  transform:scale(0.9);
+  pointer-events:none;
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+
+.price{
+  margin-top:10px;
+  font-weight:600;
+  color:var(--accent);
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<button class="toggle-btn" onclick="toggleTheme()">🌙 / ☀️</button>
+
+<header>
+  <h1>🤖 Smart Computer Spec System</h1>
+  <p>ระบบแนะนำสเปคคอมอัจฉริยะ</p>
+</header>
+
+<div class="search-box">
+  <input type="text" id="searchName" placeholder="🔎 ค้นหาชื่อสเปค...">
+  <input type="number" id="searchPrice" placeholder="💰 งบประมาณสูงสุด (บาท)">
+</div>
+
+<div class="container" id="cardContainer">
+
+  <div class="card" data-name="Gaming Starter Ryzen 5 5600" data-price="25900">
+    <h3>Gaming Starter</h3>
+    <p>Ryzen 5 5600</p>
+    <p class="price">ราคา: 25,900 บาท</p>
+  </div>
+
+  <div class="card" data-name="Gaming Pro i7-13700K" data-price="42900">
+    <h3>Gaming Pro</h3>
+    <p>i7-13700K</p>
+    <p class="price">ราคา: 42,900 บาท</p>
+  </div>
+
+  <div class="card" data-name="Office Basic i3-12100" data-price="18500">
+    <h3>Office Basic</h3>
+    <p>i3-12100</p>
+    <p class="price">ราคา: 18,500 บาท</p>
+  </div>
+
+  <div class="card" data-name="Programmer Set Ryzen 7 7700X" data-price="36900">
+    <h3>Programmer Set</h3>
+    <p>Ryzen 7 7700X</p>
+    <p class="price">ราคา: 36,900 บาท</p>
+  </div>
+
+  <div class="card" data-name="Graphic Design i9-13900K" data-price="55900">
+    <h3>Graphic Design</h3>
+    <p>i9-13900K</p>
+    <p class="price">ราคา: 55,900 บาท</p>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Smart Computer Spec API Project
+</footer>
+
+<script>
+const nameInput = document.getElementById("searchName");
+const priceInput = document.getElementById("searchPrice");
+const cards = document.querySelectorAll(".card");
+
+function filterCards(){
+  const nameValue = nameInput.value.toLowerCase();
+  const priceValue = parseInt(priceInput.value);
+
+  cards.forEach(card=>{
+    const cardName = card.dataset.name.toLowerCase();
+    const cardPrice = parseInt(card.dataset.price);
+
+    const matchName = cardName.includes(nameValue);
+    const matchPrice = !priceValue || cardPrice <= priceValue;
+
+    if(matchName && matchPrice){
+      card.classList.remove("hide");
+    }else{
+      card.classList.add("hide");
+    }
+  });
+}
+
+nameInput.addEventListener("input", filterCards);
+priceInput.addEventListener("input", filterCards);
+
+function toggleTheme(){
+  document.body.classList.toggle("light");
+}
+</script>
+
+</body>
+</html>
