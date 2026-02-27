@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Computer Spec API</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Computer Spec API</h1>
+    <p>กดปุ่มเพื่อดึงข้อมูลสเปคคอมพิวเตอร์</p>
+
+    <button onclick="getSpec()">Load Spec</button>
+
+    <pre id="result"></pre>
+
+    <script>
+        async function getSpec() {
+            const res = await fetch('/api/spec');
+            const data = await res.json();
+            document.getElementById('result').textContent =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+
+</body>
+</html>
