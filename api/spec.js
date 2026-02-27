@@ -1,206 +1,110 @@
 export default function handler(req, res) {
-
   const computers = [
-
-    // ================= GAMING =================
     {
       id: 1,
       name: "Gaming Starter",
-      type: "gaming",
       cpu: "Ryzen 5 5600",
+      gpu: "RTX 3060",
       ram: "16GB DDR4",
       storage: "1TB SSD",
-      gpu: "RTX 3060",
-      os: "Windows 11",
-      price: 25900
+      price: 25900,
+      type: "gaming"
     },
     {
       id: 2,
-      name: "Gaming Plus",
-      type: "gaming",
-      cpu: "Ryzen 5 7600",
-      ram: "16GB DDR5",
+      name: "Gaming Pro",
+      cpu: "i7-13700K",
+      gpu: "RTX 4070",
+      ram: "32GB DDR5",
       storage: "1TB NVMe",
-      gpu: "RX 6700XT",
-      os: "Windows 11",
-      price: 32900
+      price: 45900,
+      type: "gaming"
     },
     {
       id: 3,
-      name: "Gaming Pro",
-      type: "gaming",
-      cpu: "i7-13700K",
-      ram: "32GB DDR5",
-      storage: "1TB NVMe",
-      gpu: "RTX 4080",
-      os: "Windows 11 Pro",
-      price: 42900
+      name: "Office Basic",
+      cpu: "i3-12100",
+      gpu: "Integrated",
+      ram: "8GB",
+      storage: "512GB SSD",
+      price: 15900,
+      type: "office"
     },
     {
       id: 4,
-      name: "Gaming Ultra",
-      type: "gaming",
-      cpu: "i9-14900K",
-      ram: "64GB DDR5",
-      storage: "2TB NVMe",
-      gpu: "RTX 4090",
-      os: "Windows 11 Pro",
-      price: 89900
+      name: "Office Pro",
+      cpu: "Ryzen 5 5600G",
+      gpu: "Integrated",
+      ram: "16GB",
+      storage: "1TB SSD",
+      price: 19900,
+      type: "office"
     },
-
-    // ================= OFFICE =================
     {
       id: 5,
-      name: "Office Basic",
-      type: "office",
-      cpu: "i3-12100",
-      ram: "8GB",
-      storage: "512GB SSD",
-      gpu: "Integrated",
-      os: "Windows 11",
-      price: 18500
+      name: "Streamer Build",
+      cpu: "Ryzen 7 5800X",
+      gpu: "RTX 3070",
+      ram: "32GB",
+      storage: "2TB NVMe",
+      price: 38900,
+      type: "gaming"
     },
     {
       id: 6,
-      name: "Office Pro",
-      type: "office",
-      cpu: "i5-13400",
-      ram: "16GB",
-      storage: "1TB SSD",
-      gpu: "Integrated",
-      os: "Windows 11",
-      price: 22900
+      name: "Ultra Gaming",
+      cpu: "i9-13900K",
+      gpu: "RTX 4090",
+      ram: "64GB DDR5",
+      storage: "2TB NVMe",
+      price: 99900,
+      type: "gaming"
     },
     {
       id: 7,
-      name: "Office Advanced",
-      type: "office",
-      cpu: "Ryzen 5 5600G",
+      name: "Budget Gaming",
+      cpu: "Ryzen 5 3600",
+      gpu: "GTX 1660",
       ram: "16GB",
-      storage: "1TB SSD",
-      gpu: "Integrated Vega",
-      os: "Windows 11",
-      price: 24900
+      storage: "512GB SSD",
+      price: 19900,
+      type: "gaming"
     },
-
-    // ================= CODING =================
     {
       id: 8,
-      name: "Programmer Set",
-      type: "coding",
-      cpu: "Ryzen 7 7700X",
-      ram: "32GB DDR5",
-      storage: "1TB NVMe",
-      gpu: "RTX 4060",
-      os: "Windows 11",
-      price: 36900
+      name: "Mini Office",
+      cpu: "i5-12400",
+      gpu: "Integrated",
+      ram: "16GB",
+      storage: "512GB SSD",
+      price: 18900,
+      type: "office"
     },
     {
       id: 9,
-      name: "Dev Advanced",
-      type: "coding",
-      cpu: "i7-14700K",
-      ram: "32GB DDR5",
+      name: "Content Creator",
+      cpu: "Ryzen 9 7900X",
+      gpu: "RTX 4080",
+      ram: "64GB",
       storage: "2TB NVMe",
-      gpu: "RTX 4070",
-      os: "Windows 11 Pro",
-      price: 45900
+      price: 78900,
+      type: "gaming"
     },
     {
       id: 10,
-      name: "Full Stack Beast",
-      type: "coding",
-      cpu: "Ryzen 9 7900X",
-      ram: "64GB DDR5",
-      storage: "2TB NVMe",
-      gpu: "RTX 4080",
-      os: "Windows 11 Pro",
-      price: 55900
-    },
-
-    // ================= DESIGN =================
-    {
-      id: 11,
-      name: "Graphic Design",
-      type: "design",
-      cpu: "i9-13900K",
-      ram: "64GB DDR5",
-      storage: "2TB NVMe",
-      gpu: "RTX 4090",
-      os: "Windows 11 Pro",
-      price: 65900
-    },
-    {
-      id: 12,
-      name: "Video Editor Pro",
-      type: "design",
-      cpu: "Ryzen 9 7950X",
-      ram: "64GB DDR5",
-      storage: "4TB NVMe",
-      gpu: "RTX 4090",
-      os: "Windows 11 Pro",
-      price: 79900
-    },
-
-    // ================= STREAMING =================
-    {
-      id: 13,
-      name: "Streaming Setup",
-      type: "streaming",
-      cpu: "Ryzen 7 5800X",
-      ram: "32GB",
-      storage: "1TB SSD",
-      gpu: "RTX 4070",
-      os: "Windows 11",
-      price: 39900
-    },
-
-    // ================= BUDGET =================
-    {
-      id: 14,
-      name: "Budget Gamer",
-      type: "budget",
-      cpu: "Ryzen 5 5500",
-      ram: "16GB",
-      storage: "512GB SSD",
-      gpu: "RX 6600",
-      os: "Windows 11",
-      price: 21900
-    },
-    {
-      id: 15,
-      name: "Student Basic",
-      type: "budget",
-      cpu: "i3-10100",
-      ram: "8GB",
-      storage: "512GB SSD",
+      name: "School PC",
+      cpu: "Athlon 3000G",
       gpu: "Integrated",
-      os: "Windows 11",
-      price: 15900
+      ram: "8GB",
+      storage: "256GB SSD",
+      price: 10900,
+      type: "office"
     }
-
   ];
 
-  const { use, maxprice } = req.query;
-
-  let result = computers;
-
-  if (use) {
-    const keyword = use.toLowerCase();
-    result = result.filter(pc =>
-      pc.type.includes(keyword)
-    );
-  }
-
-  if (maxprice) {
-    const budget = parseInt(maxprice);
-    result = result.filter(pc =>
-      pc.price <= budget
-    );
-  }
-
   res.status(200).json({
-    total: result.length,
-    data: result
+    success: true,
+    total: computers.length,
+    data: computers
   });
 }
