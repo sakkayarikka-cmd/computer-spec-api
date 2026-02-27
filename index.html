@@ -42,7 +42,7 @@ header{
 }
 
 h1{
-  font-size:38px;
+  font-size:36px;
   margin-bottom:10px;
 }
 
@@ -62,13 +62,21 @@ h1{
   margin:20px 0 40px;
 }
 
-.search-box input{
+.search-box input, .search-box select{
   padding:10px 15px;
   margin:5px;
   border:none;
   border-radius:20px;
-  width:220px;
+  width:200px;
   outline:none;
+}
+
+.search-box button{
+  padding:10px 15px;
+  border:none;
+  border-radius:20px;
+  background:var(--accent);
+  cursor:pointer;
 }
 
 .container{
@@ -86,15 +94,12 @@ h1{
   border-radius:15px;
   text-align:center;
   box-shadow:0 10px 25px rgba(0,0,0,0.3);
-  transition:0.4s ease;
+  transition:0.3s ease;
   opacity:1;
-  transform:scale(1);
 }
 
 .card.hide{
-  opacity:0;
-  transform:scale(0.9);
-  pointer-events:none;
+  display:none;
 }
 
 .card:hover{
@@ -121,44 +126,63 @@ footer{
 
 <header>
   <h1>🤖 Smart Computer Spec System</h1>
-  <p>ระบบแนะนำสเปคคอมอัจฉริยะ</p>
+  <p>ระบบค้นหาและแนะนำสเปคคอมพิวเตอร์</p>
 </header>
 
 <div class="search-box">
-  <input type="text" id="searchName" placeholder="🔎 ค้นหาชื่อสเปค...">
-  <input type="number" id="searchPrice" placeholder="💰 งบประมาณสูงสุด (บาท)">
+  <input type="text" id="searchName" placeholder="🔎 ค้นหาชื่อ / CPU / GPU">
+  <input type="number" id="searchPrice" placeholder="💰 งบสูงสุด">
+  <select id="sortPrice">
+    <option value="">เรียงราคา</option>
+    <option value="low">ต่ำ → สูง</option>
+    <option value="high">สูง → ต่ำ</option>
+  </select>
+  <button onclick="clearFilter()">ล้าง</button>
 </div>
 
 <div class="container" id="cardContainer">
 
-  <div class="card" data-name="Gaming Starter Ryzen 5 5600" data-price="25900">
+  <!-- เพิ่มสเปคเยอะๆ -->
+  <div class="card" data-name="Gaming Starter Ryzen 5 RTX 3060" data-price="25900">
     <h3>Gaming Starter</h3>
-    <p>Ryzen 5 5600</p>
-    <p class="price">ราคา: 25,900 บาท</p>
+    <p>Ryzen 5 5600 | RTX 3060 | 16GB</p>
+    <p class="price">25,900 บาท</p>
   </div>
 
-  <div class="card" data-name="Gaming Pro i7-13700K" data-price="42900">
+  <div class="card" data-name="Gaming Plus Ryzen 5 RTX 4060" data-price="32900">
+    <h3>Gaming Plus</h3>
+    <p>Ryzen 5 7600 | RTX 4060 | 16GB</p>
+    <p class="price">32,900 บาท</p>
+  </div>
+
+  <div class="card" data-name="Gaming Pro i7 RTX 4080" data-price="42900">
     <h3>Gaming Pro</h3>
-    <p>i7-13700K</p>
-    <p class="price">ราคา: 42,900 บาท</p>
+    <p>i7-13700K | RTX 4080 | 32GB</p>
+    <p class="price">42,900 บาท</p>
   </div>
 
-  <div class="card" data-name="Office Basic i3-12100" data-price="18500">
+  <div class="card" data-name="Office Basic i3" data-price="18500">
     <h3>Office Basic</h3>
-    <p>i3-12100</p>
-    <p class="price">ราคา: 18,500 บาท</p>
+    <p>i3-12100 | 8GB | SSD</p>
+    <p class="price">18,500 บาท</p>
   </div>
 
-  <div class="card" data-name="Programmer Set Ryzen 7 7700X" data-price="36900">
+  <div class="card" data-name="Office Pro i5" data-price="22900">
+    <h3>Office Pro</h3>
+    <p>i5-13400 | 16GB</p>
+    <p class="price">22,900 บาท</p>
+  </div>
+
+  <div class="card" data-name="Programmer Set Ryzen 7" data-price="36900">
     <h3>Programmer Set</h3>
-    <p>Ryzen 7 7700X</p>
-    <p class="price">ราคา: 36,900 บาท</p>
+    <p>Ryzen 7 7700X | 32GB</p>
+    <p class="price">36,900 บาท</p>
   </div>
 
-  <div class="card" data-name="Graphic Design i9-13900K" data-price="55900">
+  <div class="card" data-name="Graphic Design i9 RTX 4090" data-price="55900">
     <h3>Graphic Design</h3>
-    <p>i9-13900K</p>
-    <p class="price">ราคา: 55,900 บาท</p>
+    <p>i9-13900K | RTX 4090 | 64GB</p>
+    <p class="price">55,900 บาท</p>
   </div>
 
 </div>
@@ -170,11 +194,14 @@ footer{
 <script>
 const nameInput = document.getElementById("searchName");
 const priceInput = document.getElementById("searchPrice");
-const cards = document.querySelectorAll(".card");
+const sortSelect = document.getElementById("sortPrice");
+const container = document.getElementById("cardContainer");
 
 function filterCards(){
   const nameValue = nameInput.value.toLowerCase();
-  const priceValue = parseInt(priceInput.value);
+  const priceValue = priceInput.value ? parseInt(priceInput.value) : null;
+
+  const cards = document.querySelectorAll(".card");
 
   cards.forEach(card=>{
     const cardName = card.dataset.name.toLowerCase();
@@ -183,16 +210,37 @@ function filterCards(){
     const matchName = cardName.includes(nameValue);
     const matchPrice = !priceValue || cardPrice <= priceValue;
 
-    if(matchName && matchPrice){
-      card.classList.remove("hide");
-    }else{
-      card.classList.add("hide");
-    }
+    card.style.display = (matchName && matchPrice) ? "block" : "none";
   });
+
+  sortCards();
+}
+
+function sortCards(){
+  const cards = Array.from(document.querySelectorAll(".card"));
+  const value = sortSelect.value;
+
+  if(!value) return;
+
+  cards.sort((a,b)=>{
+    const priceA = parseInt(a.dataset.price);
+    const priceB = parseInt(b.dataset.price);
+    return value === "low" ? priceA - priceB : priceB - priceA;
+  });
+
+  cards.forEach(card=>container.appendChild(card));
+}
+
+function clearFilter(){
+  nameInput.value = "";
+  priceInput.value = "";
+  sortSelect.value = "";
+  filterCards();
 }
 
 nameInput.addEventListener("input", filterCards);
 priceInput.addEventListener("input", filterCards);
+sortSelect.addEventListener("change", filterCards);
 
 function toggleTheme(){
   document.body.classList.toggle("light");
