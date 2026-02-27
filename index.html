@@ -1,174 +1,172 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <title>Smart Computer Spec AI</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-      color: white;
-      text-align: center;
-      padding: 40px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Computer Spec</title>
 
-    input {
-      padding: 8px;
-      margin: 5px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    button {
-      padding: 8px 15px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      background: #00e5ff;
-      font-weight: bold;
-    }
+<style>
+:root {
+  --bg-color: linear-gradient(135deg,#1e3c72,#2a5298);
+  --card-bg: #ffffff;
+  --text-color: #222;
+  --accent: #00e0ff;
+}
 
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-    }
+body.dark {
+  --bg-color: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  --card-bg: #1e1e1e;
+  --text-color: #f5f5f5;
+  --accent: #00ffcc;
+}
 
-    .card {
-      background: white;
-      color: black;
-      width: 250px;
-      padding: 15px;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
 
-    .card:hover {
-      transform: scale(1.05);
-    }
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.5s ease;
+  min-height:100vh;
+}
 
-    #modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-    }
+header {
+  text-align:center;
+  padding:40px 20px;
+  animation: fadeDown 1s ease;
+}
 
-    #modalContent {
-      background: white;
-      color: black;
-      width: 400px;
-      margin: 100px auto;
-      padding: 20px;
-      border-radius: 15px;
-    }
-  </style>
+h1 {
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+.toggle-btn {
+  position:absolute;
+  top:20px;
+  right:20px;
+  padding:8px 15px;
+  border:none;
+  border-radius:20px;
+  background:var(--accent);
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.toggle-btn:hover {
+  transform:scale(1.1);
+}
+
+.container {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:25px;
+  padding:20px;
+}
+
+.card {
+  background:var(--card-bg);
+  width:260px;
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  transition:0.4s ease;
+  animation: fadeUp 1s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:0 15px 35px rgba(0,0,0,0.3);
+}
+
+.card h3 {
+  margin-bottom:10px;
+}
+
+.price {
+  margin-top:10px;
+  font-weight:600;
+  color:var(--accent);
+}
+
+footer {
+  text-align:center;
+  padding:30px;
+  opacity:0.7;
+}
+
+@keyframes fadeUp {
+  from {opacity:0; transform:translateY(40px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeDown {
+  from {opacity:0; transform:translateY(-40px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+</style>
 </head>
+
 <body>
 
-<h1>🤖 Smart Computer Spec System</h1>
+<button class="toggle-btn" onclick="toggleTheme()">🌙 / ☀️</button>
 
-<!-- LOGIN -->
-<h2>Login</h2>
-<input id="user" placeholder="username">
-<input id="pass" type="password" placeholder="password">
-<button onclick="login()">Login</button>
+<header>
+  <h1>🤖 Smart Computer Spec System</h1>
+  <p>ระบบแนะนำสเปคคอมอัจฉริยะ</p>
+</header>
 
-<hr>
+<div class="container">
 
-<!-- โหลดเครื่อง -->
-<button onclick="loadComputers()">Load Computers</button>
-
-<div class="container" id="result"></div>
-
-<hr>
-
-<!-- งบประมาณ -->
-<h2>Budget Recommendation</h2>
-<input id="budgetInput" placeholder="เช่น 30000">
-<button onclick="recommendBudget()">แนะนำตามงบ</button>
-
-<!-- Modal -->
-<div id="modal">
-  <div id="modalContent">
-    <div id="detail"></div>
-    <button onclick="closeModal()">Close</button>
+  <div class="card">
+    <h3>Gaming Starter</h3>
+    <p>Ryzen 5 5600</p>
+    <p class="price">ราคา: 25,900 บาท</p>
   </div>
+
+  <div class="card">
+    <h3>Gaming Pro</h3>
+    <p>i7-13700K</p>
+    <p class="price">ราคา: 42,900 บาท</p>
+  </div>
+
+  <div class="card">
+    <h3>Office Basic</h3>
+    <p>i3-12100</p>
+    <p class="price">ราคา: 18,500 บาท</p>
+  </div>
+
+  <div class="card">
+    <h3>Programmer Set</h3>
+    <p>Ryzen 7 7700X</p>
+    <p class="price">ราคา: 36,900 บาท</p>
+  </div>
+
+  <div class="card">
+    <h3>Graphic Design</h3>
+    <p>i9-13900K</p>
+    <p class="price">ราคา: 55,900 บาท</p>
+  </div>
+
 </div>
 
+<footer>
+  © 2026 Smart Computer Spec API Project
+</footer>
+
 <script>
-
-let allComputers = [];
-
-async function loadComputers(){
-  const res = await fetch('/api/spec');
-  const data = await res.json();
-
-  allComputers = data;
-
-  const container = document.getElementById('result');
-  container.innerHTML = '';
-
-  data.forEach(pc => {
-    container.innerHTML += `
-      <div class="card" onclick="showDetail('${pc._id}')">
-        <h3>${pc.name}</h3>
-        <p>${pc.cpu}</p>
-        <p><b>ราคา:</b> ${pc.price} บาท</p>
-      </div>
-    `;
-  });
+function toggleTheme(){
+  document.body.classList.toggle("dark");
 }
-
-function showDetail(id){
-  const pc = allComputers.find(x => x._id === id);
-
-  document.getElementById('detail').innerHTML = `
-    <h2>${pc.name}</h2>
-    <p><b>CPU:</b> ${pc.cpu}</p>
-    <p><b>RAM:</b> ${pc.ram}</p>
-    <p><b>Storage:</b> ${pc.storage}</p>
-    <p><b>GPU:</b> ${pc.gpu}</p>
-    <p><b>OS:</b> ${pc.os}</p>
-    <p><b>ราคา:</b> ${pc.price} บาท</p>
-  `;
-
-  document.getElementById('modal').style.display = 'block';
-}
-
-function closeModal(){
-  document.getElementById('modal').style.display = 'none';
-}
-
-async function recommendBudget(){
-  const budget = document.getElementById("budgetInput").value;
-  const res = await fetch('/api/spec?budget=' + budget);
-  const data = await res.json();
-
-  if(data.length > 0){
-    showDetail(data[0]._id);
-  } else {
-    alert("ไม่พบเครื่องในงบนี้");
-  }
-}
-
-async function login(){
-  const username = document.getElementById("user").value;
-  const password = document.getElementById("pass").value;
-
-  const res = await fetch('/api/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-
-  const data = await res.json();
-  alert(data.message);
-}
-
 </script>
 
 </body>
