@@ -131,7 +131,7 @@ button {
 let computers = [];
 
 async function fetchData() {
-  const res = await fetch("/api/computers");
+  const res = await fetch("/api/spec");
   computers = await res.json();
   render(computers);
 }
